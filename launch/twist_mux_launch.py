@@ -45,9 +45,17 @@ def generate_launch_description():
             default_value=default_config_joystick,
             description='Default joystick config file'),
         DeclareLaunchArgument(
+            'use_stamped',
+            default_value=False,
+            description='Use geometry_msgs/TwistStamped instead of geometry_msgs/Twist'),
+        DeclareLaunchArgument(
             'cmd_vel_out',
             default_value='twist_mux/cmd_vel',
             description='cmd vel output topic'),
+        DeclareLaunchArgument(
+            'cmd_vel_stamped_out',
+            default_value='twist_mux/cmd_vel_stamped_out',
+            description='cmd vel stamped output topic'),
         DeclareLaunchArgument(
             'use_sim_time',
             default_value='False',
@@ -58,7 +66,8 @@ def generate_launch_description():
             output='screen',
             remappings={('/cmd_vel_out', LaunchConfiguration('cmd_vel_out'))},
             parameters=[
-                {'use_sim_time': LaunchConfiguration('use_sim_time')},
+                {'use_sim_time': LaunchConfiguration('use_sim_time'),
+                 'use_stamped': LaunchConfiguration('use_stamped')},
                 LaunchConfiguration('config_locks'),
                 LaunchConfiguration('config_topics')]
         ),
