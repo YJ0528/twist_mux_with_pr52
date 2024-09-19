@@ -45,10 +45,6 @@ def generate_launch_description():
             default_value=default_config_joystick,
             description='Default joystick config file'),
         DeclareLaunchArgument(
-            'use_stamped',
-            default_value=False,
-            description='Use geometry_msgs/TwistStamped instead of geometry_msgs/Twist'),
-        DeclareLaunchArgument(
             'cmd_vel_out',
             default_value='twist_mux/cmd_vel',
             description='cmd vel output topic'),
@@ -60,6 +56,10 @@ def generate_launch_description():
             'use_sim_time',
             default_value='False',
             description='Use simulation time'),
+        DeclareLaunchArgument(
+            'use_stamped',
+            default_value=False,
+            description='Output as geometry_msgs/TwistStamped instead of geometry_msgs/Twist'),
         Node(
             package='twist_mux',
             executable='twist_mux',
