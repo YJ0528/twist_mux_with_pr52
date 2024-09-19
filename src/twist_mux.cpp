@@ -170,21 +170,25 @@ void TwistMux::getTopicHandles(const std::string & param_name, std::list<T> & to
       std::string topic;
       double timeout = 0;
       int priority = 0;
-      bool stamped_topic = false;
+      bool stamped = false;
 
       auto nh = std::shared_ptr<rclcpp::Node>(this, [](rclcpp::Node *) {});
 
       fetch_param(nh, prefix + ".topic", topic);
       fetch_param(nh, prefix + ".timeout", timeout);
       fetch_param(nh, prefix + ".priority", priority);
-      fetch_param(nh, prefix + ".stamped_topic", stamped_topic);
 
       RCLCPP_DEBUG(get_logger(), "Retrieved topic: %s", topic.c_str());
       RCLCPP_DEBUG(get_logger(), "Listed prefix: %.2f", timeout);
       RCLCPP_DEBUG(get_logger(), "Listed prefix: %d", priority);
       
       if constexpr (std::is_same_v<T, velocity_handle_variant>){
-        if(stamped_topic) {
+        try {
+          fetch_param(nh, prefix + ".stamped", stamped);
+        } catch (const ParamsHelperException& e) {
+          RCLCPP_WARN(get_logger(), ".stamped is not defined, false is assumed.");
+        }
+        if(stamped) {
           topic_hs.emplace_back(std::in_place_type<VelocityTopicHandle<geometry_msgs::msg::TwistStamped>>,
                                 prefix, topic, std::chrono::duration<double>(timeout), priority, this);
         } else {
