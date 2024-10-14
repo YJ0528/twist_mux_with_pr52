@@ -83,7 +83,7 @@ void TwistMux::init()
   getTopicHandles("topics", *velocity_hs_);
   getTopicHandles("locks", *lock_hs_);
 
-  declare_parameter("output_stamped", false);
+  declare_parameter("output_stamped", true);
   output_stamped = get_parameter("output_stamped").as_bool();
 
   /// Publisher for output topic:
